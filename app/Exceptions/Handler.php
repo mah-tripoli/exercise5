@@ -28,7 +28,11 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
-            if ($e instanceof \Illuminate\Contracts\Container\BindingResolutionException) {
+            // check request not json
+
+            if ($e instanceof \Illuminate\Contracts\Container\BindingResolutionException
+            && !request()->wantsJson()
+            ) {
                 return response()->view('errors.general', [], 500);
             }
         });

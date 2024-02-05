@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use Illuminate\Http\Request;
@@ -28,9 +29,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     // Get user rented books
     Route::get('/books/rented', [BookController::class, 'rentedBooks']);
+
+    
 });
 
 Route::get('/books', [BookController::class, 'index']);
 Route::get('/books/{book}', [BookController::class, 'show']);
+
+// Admin
+Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum', 'role.admin']], function () {
+    
+    Route::apiResource('books', AdminBookController::class);
+});
 
 
